@@ -1,6 +1,22 @@
 import axios from "axios";
 import redis from "redis";
-const redisClient = redis.createClient();
+
+// Create Redis client based on the environment
+let redisClient;
+
+if (process.env.NODE_ENV === "development") {
+  console.log("Using local Redis configuration");
+  redisClient = redis.createClient({
+    host: "localhost",
+    port: 6379,
+  });
+} else {
+    console.log("Using Render Redis configuration");
+  // Use Render's Redis configuration
+  redisClient = redis.createClient({
+    url: process.env.REDIS_URL, // Use the environment variable for the Render Redis URL
+  });
+}
 
 // Connect to Redis and handle connection
 (async () => {
