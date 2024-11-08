@@ -7,8 +7,8 @@ This is Weather API that is check the some information about spesific City!
 
 
 ## EndPoints
-```/api/<cityName>```\
-Eg: ```https://checkweather-pzv3.onrender.com/api/london```
+```/api/weather/<cityName>```\
+Eg: ```https://checkweather-pzv3.onrender.com/api/weather/london```
 
 ## Contributing
 
