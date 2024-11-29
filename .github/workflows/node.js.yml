@@ -30,4 +30,3 @@ jobs:
         echo "${{ secrets.PORT }}" > .env
         echo "${{ secrets.API_KEY }}" > .env
         echo "${{ secrets.REDIS_URL }}" > .env
-    - run: pm2 restart api
