@@ -2,45 +2,45 @@ import axios from "axios";
 import redis from "redis";
 
 // Create Redis client based on the environment
-let redisClient;
+// let redisClient;
 
-if (process.env.NODE_ENV === "development") {
-  console.log("Using local Redis configuration");
-  redisClient = redis.createClient({
-    host: "localhost",
-    port: 6379,
-  });
-} else {
-    console.log("Using Render Redis configuration");
-  // Use Render's Redis configuration
-  redisClient = redis.createClient({
-    url: process.env.REDIS_URL, // Use the environment variable for the Render Redis URL
-  });
-}
+// if (process.env.NODE_ENV === "development") {
+//   console.log("Using local Redis configuration");
+//   redisClient = redis.createClient({
+//     host: "localhost",
+//     port: 6379,
+//   });
+// } else {
+//     console.log("Using Render Redis configuration");
+//   // Use Render's Redis configuration
+//   redisClient = redis.createClient({
+//     url: process.env.REDIS_URL, // Use the environment variable for the Render Redis URL
+//   });
+// }
 
 // Connect to Redis and handle connection
-(async () => {
-  redisClient.on("error", (err) => {
-    console.log("Redis Client Error", err);
-  });
-  redisClient.on("connect", () => {
-    console.log("Redis Connected!");
-  });
-  await redisClient.connect();
-})();
+// (async () => {
+//   redisClient.on("error", (err) => {
+//     console.log("Redis Client Error", err);
+//   });
+//   redisClient.on("connect", () => {
+//     console.log("Redis Connected!");
+//   });
+//   await redisClient.connect();
+// })();
 
 export const getWether = async (req, res) => {
   try {
     const { city } = req.params;
     if (!city) return res.status(400).json({ message: "City is required" });
 
-    const cachedData = await redisClient.get(`weather:${city}`);
+    // const cachedData = await redisClient.get(`weather:${city}`);
 
-    // If we have cached data, return it
-    if (cachedData) {
-      console.log("Getting data from Redis cache");
-      return res.status(200).json(cachedData);
-    }
+    // // If we have cached data, return it
+    // if (cachedData) {
+    //   console.log("Getting data from Redis cache");
+    //   return res.status(200).json(cachedData);
+    // }
     const response = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`
     );
@@ -56,11 +56,11 @@ export const getWether = async (req, res) => {
     };
     // Store the new data in Redis
     // 'EX' means expire - here data will expire in 1800 seconds (30 minutes)
-    await redisClient.setEx(
-      `weather:${city}`,
-      1800,
-      JSON.stringify(weatherData)
-    );
+    // await redisClient.setEx(
+    //   `weather:${city}`,
+    //   1800,
+    //   JSON.stringify(weatherData)
+    // );
     res.status(200).json(weatherData);
   } catch (error) {
     console.log(error);
