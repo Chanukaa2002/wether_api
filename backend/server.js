@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your frontend URL
+    origin: "https://weather-check-pearl-xi.vercel.app/",
   })
 );
 app.use("/api/weather", wetherRoute);
